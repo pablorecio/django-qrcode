@@ -1,1 +1,42 @@
-TO COMPLETE
+.. contents::
+
+=========
+Django QR
+=========
+
+Information
+===========
+
+Django QR is a simple Django application that provides some templatetags
+that allows to include automatically QR codes on the Django site.
+
+Installation
+============
+
+Once is installed from PyPI, you just need to add it to your settings as
+'qrcode':
+
+::
+
+  INSTALLED_APPS = (..., 'qrcode', ...)
+
+Usage
+=====
+
+Its usage is very simple. You just need to use the templatetag as follows:
+
+::
+
+  {% load qr_tags %}
+
+  ...
+
+  {% qr_from_text "text" "size" %}
+  or
+  {% qr_from_mail "mail_address" "size" %}
+
+
+Where:
+
+ * Size is not mandatory, and defines the dimensions of the QR code as following: 's' (120x120 pixels), 'm' (230x230 pixels) and 'l' (350x350). Any other option will be ignored and will use 'm' as default.
+ * qr_from_mail tag just add a simple "mailto:" at the beggining, because some qr scanners can detect that as an email address in order to send it an email.
