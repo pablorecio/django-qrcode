@@ -40,3 +40,39 @@ Where:
 
  * Size is not mandatory, and defines the dimensions of the QR code as following: 's' (120x120 pixels), 'm' (230x230 pixels) and 'l' (350x350). Any other option will be ignored and will use 'm' as default.
  * qr_from_mail tag just add a simple "mailto:" at the beggining, because some qr scanners can detect that as an email address in order to send it an email.
+
+QR-code for contact information
+-------------------------------
+
+There's also a templatetag to render a QR-code that allows to store
+some contact information, such as name, phone number, email address or
+our company name.
+
+Its usage is similiar to the basics:
+
+::
+
+   {% qr_from contact contact "size" %}
+
+Where:
+
+ * Size is the same as previosly
+ * contact should be a Python dictionary (or any other hash structure) that could contain the following elements:
+
+  * *name* - Complete name
+  * *phone_number*
+  * *email*
+  * *url* - some url address, your blog or personal webpage
+  * *company*
+
+For instance, you could create a contact dictionary like the following:
+
+::
+
+    contact = {
+        'name': 'Pablo Recio',
+        'phone_number': '00000000',
+        'email': 'foo@example.com',
+        'url': 'http://www.zocolab.es',
+        'company': 'Zocolab',
+    }

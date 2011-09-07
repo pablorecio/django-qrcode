@@ -30,3 +30,23 @@ def qr_from_text(context, text, size='M'):
 @register.inclusion_tag('qrcode/qr_tag.html', takes_context=True)
 def qr_from_mail(context, text, size='M'):
     return qr_from_text(context, text='mailto:%s' % text, size=size)
+
+
+@register.inclusion_tag('qrcode/qr_tag.html', takes_context=True)
+def qr_from_contact(context, contact, size='M'):
+    final_string = 'MECARD:'
+    if contact['name']:
+        final_string += 'N:%s;' % contact['name'].replace(' ', '+')
+    if contact['phone_number']:
+        final_string += 'TEL:%s;' % contact['phone_number'].replace(
+            ' ', '+')
+    if contact['url']:
+        final_string += 'URL:%s;' % contact['url'].replace(
+            ' ', '+')
+    if contact['email']:
+        final_string += 'EMAIL:%s;' % contact['email'].replace(
+            ' ', '+')
+    if contact['company']:
+        final_string += 'ORG:%s;' % contact['company'].replace(
+            ' ', '+')
+    return qr_from_text(context, text=final_string, size=size)
