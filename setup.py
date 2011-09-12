@@ -22,7 +22,7 @@ def read(*rnames):
 
 setup(
     name="django-qrcode",
-    version="0.2.0",
+    version="0.2.5",
     author="Pablo Recio Quijano",
     author_email="pablo@zocolab.es",
     description="Django application that provides simple templatetags to generate QR-codes",

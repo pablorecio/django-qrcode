@@ -38,7 +38,7 @@ Its usage is very simple. You just need to use the templatetag as follows:
 
 Where:
 
- * Size is not mandatory, and defines the dimensions of the QR code as following: 's' (120x120 pixels), 'm' (230x230 pixels) and 'l' (350x350). Any other option will be ignored and will use 'm' as default.
+ * Size is not mandatory, and defines the dimensions of the QR code as following: 's' (120x120 pixels), 'm' (230x230 pixels), 'l' (350x350) or an integer with the size that you want to give to the QR-code (like 40, 80 or 500). Any other option will be ignored and will use 'm' as default.
  * qr_from_mail tag just add a simple "mailto:" at the beggining, because some qr scanners can detect that as an email address in order to send it an email.
 
 QR-code for contact information
@@ -76,3 +76,23 @@ For instance, you could create a contact dictionary like the following:
         'url': 'http://www.zocolab.es',
         'company': 'Zocolab',
     }
+
+Change service for QR generating
+--------------------------------
+
+By default, django-qr uses Google Chart for generating the QR-code. But this can be changed with a new template. The default
+template *qrcode/qr_tag.html* contains the following:
+
+::
+
+<img src="http://chart.apis.google.com/chart?cht=qr&chs={{ size }}x{{ size }}&chl={{ text }}" />
+
+But if you want to use some other service, like *qrserver*, you just need to add a new template in your templates dirs with
+the following code:
+
+::
+
+<img src="http://api.qrserver.com/v1/create-qr-code/?size={{ size }}x{{ size }}&data={{ text }}" />
+
+The idea is that your *qrcode/qr_tag.html* contains an img tag and the call to the service that you want, mantaining the
+variables *size* and *data*.
