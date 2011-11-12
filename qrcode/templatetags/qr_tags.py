@@ -15,6 +15,8 @@
 
 from django import template
 
+from django.contrib.sites.models import Site
+
 register = template.Library()
 
 
@@ -55,3 +57,11 @@ def qr_from_contact(context, contact, size='M'):
         final_string += 'ORG:%s;' % contact['company'].replace(
             ' ', '+')
     return qr_from_text(context, text=final_string, size=size)
+
+
+@register.inclusion_tag('qrcode/qr_tag.html', takes_context=True)
+def qr_from_object(context, obj, size='M'):
+    domain = Site.objects.get_current().domain
+    path = obj.get_absolute_path()
+    text = 'http://%s/%s'%(domain,path)
+    return qr_from_text(context, text, size=size)
