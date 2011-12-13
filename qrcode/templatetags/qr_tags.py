@@ -63,5 +63,5 @@ def qr_from_contact(context, contact, size='M'):
 def qr_from_object(context, obj, size='M'):
     domain = Site.objects.get_current().domain
     path = obj.get_absolute_url()
-    text = 'http://%s%s' % (domain,path)
+    text = 'http://%s%s' % (domain, path)
     return qr_from_text(context, text, size=size)
