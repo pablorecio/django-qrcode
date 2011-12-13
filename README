@@ -77,6 +77,21 @@ For instance, you could create a contact dictionary like the following:
         'company': 'Zocolab',
     }
 
+
+QR-code of Django object URL
+----------------------------
+
+Another templatetag can be used to render a QR-code that links to a Django object URL. As
+the previous templatetags, the usage is very simple:
+
+::
+   {% qr_from_object object "size" %}
+
+Where:
+
+ * Size is the same as previosly
+ * Object it's an instance of a Django model, that must implements the 'get_absolute_url' method in order to get the object's address.
+
 Change service for QR generating
 --------------------------------
 
