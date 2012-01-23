@@ -21,7 +21,7 @@ register = template.Library()
 
 
 @register.inclusion_tag('qrcode/qr_tag.html', takes_context=True)
-def qr_from_text(context, text, size='M'):
+def qr_from_text(context, text, size='M', proxy=0):
     if type(size) == type(0) or type(size) == type('') and size.isdigit():
         # this checks if it's an integer or a string with an integer
         actual_size = size
@@ -30,17 +30,17 @@ def qr_from_text(context, text, size='M'):
         if not size.lower() in sizes_dict:
             size = 'm'
         actual_size = sizes_dict[size.lower()]
-    return {'text': text,
-            'size': actual_size}
+    return {'text': text, 'size': actual_size, 'proxy': proxy}
 
 
 @register.inclusion_tag('qrcode/qr_tag.html', takes_context=True)
-def qr_from_mail(context, text, size='M'):
-    return qr_from_text(context, text='mailto:%s' % text, size=size)
+def qr_from_mail(context, text, size='M', proxy=0):
+    return qr_from_text(context, text='mailto:%s' % text, size=size,
+            proxy=proxy)
 
 
 @register.inclusion_tag('qrcode/qr_tag.html', takes_context=True)
-def qr_from_contact(context, contact, size='M'):
+def qr_from_contact(context, contact, size='M', proxy=0):
     final_string = 'MECARD:'
     if contact['name']:
         final_string += 'N:%s;' % contact['name'].replace(' ', '+')
@@ -56,12 +56,12 @@ def qr_from_contact(context, contact, size='M'):
     if contact['company']:
         final_string += 'ORG:%s;' % contact['company'].replace(
             ' ', '+')
-    return qr_from_text(context, text=final_string, size=size)
+    return qr_from_text(context, text=final_string, size=size, proxy=proxy)
 
 
 @register.inclusion_tag('qrcode/qr_tag.html', takes_context=True)
-def qr_from_object(context, obj, size='M'):
+def qr_from_object(context, obj, size='M', proxy=0):
     domain = Site.objects.get_current().domain
     path = obj.get_absolute_url()
     text = 'http://%s%s' % (domain, path)
-    return qr_from_text(context, text, size=size)
+    return qr_from_text(context, text, size=size, proxy=proxy)

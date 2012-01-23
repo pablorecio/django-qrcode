@@ -31,15 +31,16 @@ Its usage is very simple. You just need to use the templatetag as follows:
 
   ...
 
-  {% qr_from_text "text" "size" %}
+  {% qr_from_text "text" "size" "proxy" %}
   or
-  {% qr_from_mail "mail_address" "size" %}
+  {% qr_from_mail "mail_address" "size" "proxy" %}
 
 
 Where:
 
  * Size is not mandatory, and defines the dimensions of the QR code as following: 's' (120x120 pixels), 'm' (230x230 pixels), 'l' (350x350) or an integer with the size that you want to give to the QR-code (like 40, 80 or 500). Any other option will be ignored and will use 'm' as default.
  * qr_from_mail tag just add a simple "mailto:" at the beggining, because some qr scanners can detect that as an email address in order to send it an email.
+ * proxy is a number between 0 to 9. By calling different proxies for different qr codes, you will improve the load time on pages with many images (default to 0)
 
 QR-code for contact information
 -------------------------------
@@ -52,12 +53,13 @@ Its usage is similiar to the basics:
 
 ::
 
-   {% qr_from contact contact "size" %}
+   {% qr_from contact contact "size" "proxy" %}
 
 Where:
 
- * Size is the same as previosly
+ * Size is the same as previously
  * contact should be a Python dictionary (or any other hash structure) that could contain the following elements:
+ * proxy is the same as previously
 
   * *name* - Complete name
   * *phone_number*
@@ -85,12 +87,13 @@ Another templatetag can be used to render a QR-code that links to a Django objec
 the previous templatetags, the usage is very simple:
 
 ::
-   {% qr_from_object object "size" %}
+   {% qr_from_object object "size" "proxy" %}
 
 Where:
 
- * Size is the same as previosly
+ * Size is the same as previously
  * Object it's an instance of a Django model, that must implements the 'get_absolute_url' method in order to get the object's address.
+ * Proxy is the same as previously
 
 Change service for QR generating
 --------------------------------
@@ -100,7 +103,7 @@ template *qrcode/qr_tag.html* contains the following:
 
 ::
 
-<img src="http://chart.apis.google.com/chart?cht=qr&chs={{ size }}x{{ size }}&chl={{ text }}" />
+<img src="http://{{ proxy }}.chart.apis.google.com/chart?cht=qr&chs={{ size }}x{{ size }}&chl={{ text }}" />
 
 But if you want to use some other service, like *qrserver*, you just need to add a new template in your templates dirs with
 the following code:
