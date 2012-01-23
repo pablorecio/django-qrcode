@@ -36,6 +36,15 @@ Its usage is very simple. You just need to use the templatetag as follows:
   {% qr_from_mail "mail_address" "size" "proxy" %}
 
 
+Example when looping on a list of QR codes to generate::
+
+    {% for qrcode in qrcode_list %}
+    {% cycle 0 1 2 3 4 5 6 7 8 9 as proxy silent %}
+    <p class="qrcodeImage">{% qr_from_text "text" "size" proxy %}
+    {% endfor %}
+
+
+
 Where:
 
  * Size is not mandatory, and defines the dimensions of the QR code as following: 's' (120x120 pixels), 'm' (230x230 pixels), 'l' (350x350) or an integer with the size that you want to give to the QR-code (like 40, 80 or 500). Any other option will be ignored and will use 'm' as default.
@@ -94,6 +103,7 @@ Where:
  * Size is the same as previously
  * Object it's an instance of a Django model, that must implements the 'get_absolute_url' method in order to get the object's address.
  * Proxy is the same as previously
+
 
 Change service for QR generating
 --------------------------------
