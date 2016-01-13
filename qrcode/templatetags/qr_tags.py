@@ -31,7 +31,9 @@ def qr_from_text(context, text, size='M', myclass=''):
             size = 'm'
         actual_size = sizes_dict[size.lower()]
     myclass = ( 'class=%s' % myclass if myclass else '')
-    return {'text': text, 'size': actual_size, 'myclass': myclass}
+    myurl = 'src=https://chart.googleapis.com/chart?cht=qr&chs=%sx%s&chl=%s' % (actual_size,actual_size,text)
+    myalt = "alt=%s" % text
+    return {'text': text, 'size': actual_size, 'myclass': myclass, 'myurl': myurl, 'myalt': myalt}
 
 
 @register.inclusion_tag('qrcode/qr_tag.html', takes_context=True)
