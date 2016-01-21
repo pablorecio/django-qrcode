@@ -31,12 +31,7 @@ def qr_from_text(context, text, size='M', myclass=''):
             size = 'm'
         actual_size = sizes_dict[size.lower()]
     myclass = ( 'class=%s' % myclass if myclass else '')
-<<<<<<< HEAD
     myurl = 'src=https://chart.googleapis.com/chart?cht=qr&chs=%sx%s&chl=%s' % (actual_size,actual_size,text)
-=======
-    myurl = 'src="https://chart.googleapis.com/chart?cht=qr&amp;chs=%sx%s&amp;chl=%s"' % (actual_size,actual_size,text)
- alt="{{ text }}"
->>>>>>> 0f1b22e3407d032b5c0fffaf82ed754b9689993c
     myalt = "alt=%s" % text
     return {'text': text, 'size': actual_size, 'myclass': myclass, 'myurl': myurl, 'myalt': myalt}
 
