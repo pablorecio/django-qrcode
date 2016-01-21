@@ -19,7 +19,9 @@ from django.contrib.sites.models import Site
 
 register = template.Library()
 
-defaulturl='src=https://chart.googleapis.com/chart?cht=qr&chs=%sx%s&chl=%s'
+googleapi='src=https://chart.googleapis.com/chart?cht=qr&chs=%sx%s&chl=%s'
+qserverapi='src=http://api.qrserver.com/v1/create-qr-code/?size=%sx%s&data=%s'
+defaulturl=googleapi
 
 
 @register.inclusion_tag('qrcode/qr_tag.html', takes_context=True)

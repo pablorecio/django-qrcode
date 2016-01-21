@@ -112,14 +112,16 @@ The default templatetags qr_tags.py contains the following:
 
 ::
 
-defaulturl='src=https://chart.googleapis.com/chart?cht=qr&chs=%sx%s&chl=%s'
+googleapi='src=https://chart.googleapis.com/chart?cht=qr&chs=%sx%s&chl=%s'
+qserverapi='src=http://api.qrserver.com/v1/create-qr-code/?size=%sx%s&data=%s'
+defaulturl=googleapi
 
 But if you want to use some other service, like *qrserver*, you just need to add a new template in your templates dirs with
 the following code:
 
 ::
 
-defaulturl='src=http://api.qrserver.com/v1/create-qr-code/?size=%sx%s&data=%s'
+defaulturl=qserverapi
 
 The idea is that your *qrcode/qr_tag.html* contains an img tag and the call to the service that you want, mantaining the
 variables *size* and *data*.
