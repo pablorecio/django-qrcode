@@ -31,15 +31,15 @@ Its usage is very simple. You just need to use the templatetag as follows:
 
   ...
 
-  {% qr_from_text "text" "size" %}
+  {% qr_from_text "text" "size" "css_class" %}
   or
-  {% qr_from_mail "mail_address" "size" %}
+  {% qr_from_mail "mail_address" "size" "css_class" %}
 
 
 Example when looping on a list of QR codes to generate::
 
     {% for qrcode in qrcode_list %}
-    <p class="qrcodeImage">{% qr_from_text "text" "size" %}
+    <p class="qrcodeImage">{% qr_from_text "text" "size" "classqr" %}
     {% endfor %}
 
 
@@ -47,6 +47,7 @@ Example when looping on a list of QR codes to generate::
 Where:
 
  * Size is not mandatory, and defines the dimensions of the QR code as following: 's' (120x120 pixels), 'm' (230x230 pixels), 'l' (350x350) or an integer with the size that you want to give to the QR-code (like 40, 80 or 500). Any other option will be ignored and will use 'm' as default.
+ * css_class is just a string defining a css class, letting you be able to define how the qrcode may appear in the page by configuring the CSS Class.
  * qr_from_mail tag just add a simple "mailto:" at the beggining, because some qr scanners can detect that as an email address in order to send it an email.
 
 QR-code for contact information
@@ -60,11 +61,12 @@ Its usage is similiar to the basics:
 
 ::
 
-   {% qr_from contact contact "size" %}
+   {% qr_from contact contact "size" "css_class" %}
 
 Where:
 
  * Size is the same as previously
+ * Class idem
  * contact should be a Python dictionary (or any other hash structure) that could contain the following elements:
 
   * *name* - Complete name
@@ -93,30 +95,31 @@ Another templatetag can be used to render a QR-code that links to a Django objec
 the previous templatetags, the usage is very simple:
 
 ::
-   {% qr_from_object object "size" %}
+   {% qr_from_object object "size" "css_class" %}
 
 Where:
 
  * Size is the same as previously
+ * Css_class is the same as previously
  * Object it's an instance of a Django model, that must implements the 'get_absolute_url' method in order to get the object's address.
 
 
 Change service for QR generating
 --------------------------------
 
-By default, django-qr uses Google Chart for generating the QR-code. But this can be changed with a new template. The default
-template *qrcode/qr_tag.html* contains the following:
+By default, django-qr uses Google Chart for generating the QR-code. But this can be changed in the templatetags (templatetags/qr_tags.py)
+The default templatetags qr_tags.py contains the following:
 
 ::
 
-<img src="http://chart.googleapis.com/chart?cht=qr&chs={{ size }}x{{ size }}&chl={{ text }}" />
+defaulturl='src=https://chart.googleapis.com/chart?cht=qr&chs=%sx%s&chl=%s'
 
 But if you want to use some other service, like *qrserver*, you just need to add a new template in your templates dirs with
 the following code:
 
 ::
 
-<img src="http://api.qrserver.com/v1/create-qr-code/?size={{ size }}x{{ size }}&data={{ text }}" />
+defaulturl='src=http://api.qrserver.com/v1/create-qr-code/?size=%sx%s&data=%s'
 
 The idea is that your *qrcode/qr_tag.html* contains an img tag and the call to the service that you want, mantaining the
 variables *size* and *data*.
