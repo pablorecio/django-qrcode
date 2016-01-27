@@ -19,9 +19,13 @@ from django.contrib.sites.models import Site
 
 register = template.Library()
 
+googleapi='src=https://chart.googleapis.com/chart?cht=qr&chs=%sx%s&chl=%s'
+qserverapi='src=http://api.qrserver.com/v1/create-qr-code/?size=%sx%s&data=%s'
+defaulturl=googleapi
+
 
 @register.inclusion_tag('qrcode/qr_tag.html', takes_context=True)
-def qr_from_text(context, text, size='M'):
+def qr_from_text(context, text, size='M', myclass=''):
     if type(size) == type(0) or type(size) == type('') and size.isdigit():
         # this checks if it's an integer or a string with an integer
         actual_size = size
@@ -30,16 +34,20 @@ def qr_from_text(context, text, size='M'):
         if not size.lower() in sizes_dict:
             size = 'm'
         actual_size = sizes_dict[size.lower()]
-    return {'text': text, 'size': actual_size}
+    myclass = ( 'class=%s' % myclass if myclass else '')
+    myurl = defaulturl % (actual_size,actual_size,text)
+
+    myalt = "alt=%s" % text
+    return {'text': text, 'size': actual_size, 'myclass': myclass, 'myurl': myurl, 'myalt': myalt}
 
 
 @register.inclusion_tag('qrcode/qr_tag.html', takes_context=True)
-def qr_from_mail(context, text, size='M'):
-    return qr_from_text(context, text='mailto:%s' % text, size=size)
+def qr_from_mail(context, text, size='M', myclass=''):
+    return qr_from_text(context, text='mailto:%s' % text, size=size, myclass=myclass)
 
 
 @register.inclusion_tag('qrcode/qr_tag.html', takes_context=True)
-def qr_from_contact(context, contact, size='M'):
+def qr_from_contact(context, contact, size='M', myclass=''):
     final_string = 'MECARD:'
     if contact['name']:
         final_string += 'N:%s;' % contact['name'].replace(' ', '+')
@@ -55,12 +63,12 @@ def qr_from_contact(context, contact, size='M'):
     if contact['company']:
         final_string += 'ORG:%s;' % contact['company'].replace(
             ' ', '+')
-    return qr_from_text(context, text=final_string, size=size)
+    return qr_from_text(context, text=final_string, size=size, myclass=myclass)
 
 
 @register.inclusion_tag('qrcode/qr_tag.html', takes_context=True)
-def qr_from_object(context, obj, size='M'):
+def qr_from_object(context, obj, size='M', myclass=''):
     domain = Site.objects.get_current().domain
     path = obj.get_absolute_url()
     text = 'http://%s%s' % (domain, path)
-    return qr_from_text(context, text, size=size)
+    return qr_from_text(context, text, size=size, myclass=myclass)
