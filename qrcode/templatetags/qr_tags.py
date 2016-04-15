@@ -15,7 +15,6 @@
 
 from django import template
 
-from django.contrib.sites.models import Site
 
 register = template.Library()
 
@@ -60,6 +59,7 @@ def qr_from_contact(context, contact, size='M'):
 
 @register.inclusion_tag('qrcode/qr_tag.html', takes_context=True)
 def qr_from_object(context, obj, size='M'):
+    from django.contrib.sites.models import Site
     domain = Site.objects.get_current().domain
     path = obj.get_absolute_url()
     text = 'http://%s%s' % (domain, path)
